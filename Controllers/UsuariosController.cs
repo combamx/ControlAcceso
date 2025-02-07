@@ -40,5 +40,8 @@ namespace ControlAcceso.Controllers
             await _usuarioService.UpdatePermisosAsync ( id , permisos );
             return NoContent ( );
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll ( ) => Ok ( await _usuarioService.GetAllAsync ( ) );
     }
 }

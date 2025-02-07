@@ -32,7 +32,9 @@ namespace ControlAcceso.Controllers
                 return Unauthorized ( );
             }
 
-            var accesoPermitido = usuario.Permisos.Contains ( puntoAcceso );
+            //var accesoPermitido = usuario.Permisos.Contains ( puntoAcceso );
+            var accesoPermitido = usuario.Permisos.Where ( p => p.Id.Equals ( puntoAcceso.Id , StringComparison.OrdinalIgnoreCase ) ).ToList ( ).Count >= 1 ? true : false;
+
             await _logAccesoService.CreateAsync ( new LogAcceso
             {
                 UsuarioId = usuario.Id ,
@@ -40,7 +42,7 @@ namespace ControlAcceso.Controllers
                 AccesoPermitido = accesoPermitido
             } );
 
-            return accesoPermitido ? Ok ( )
+            return accesoPermitido ? Ok ( "Acceso correcto" )
             : new ObjectResult ( new { Mensaje = "Acceso denegado" } )
             {
                 StatusCode = StatusCodes.Status403Forbidden
